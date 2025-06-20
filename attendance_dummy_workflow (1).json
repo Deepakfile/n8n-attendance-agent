@@ -1,0 +1,65 @@
+{
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "1",
+      "name": "Start",
+      "type": "n8n-nodes-base.start",
+      "typeVersion": 1,
+      "position": [
+        250,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "functionCode": "return [\n  {\n    json: { values: [\"Alice\", \"2025-06-20\", \"Present\"] }\n  },\n  {\n    json: { values: [\"Bob\", \"2025-06-20\", \"Absent\"] }\n  },\n  {\n    json: { values: [\"Charlie\", \"2025-06-20\", \"Present\"] }\n  },\n  {\n    json: { values: [\"Diana\", \"2025-06-20\", \"Absent\"] }\n  },\n  {\n    json: { values: [\"Eve\", \"2025-06-20\", \"Present\"] }\n  }\n];"
+      },
+      "id": "2",
+      "name": "Dummy Attendance Data",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [
+        500,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "functionCode": "const result = [];\n\nfor (const row of items) {\n  const [name, date, status] = row.json.values;\n  result.push({ json: { name, date, status } });\n}\n\nreturn result;"
+      },
+      "id": "3",
+      "name": "Analyze Attendance",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [
+        750,
+        300
+      ]
+    }
+  ],
+  "connections": {
+    "Start": {
+      "main": [
+        [
+          {
+            "node": "Dummy Attendance Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Dummy Attendance Data": {
+      "main": [
+        [
+          {
+            "node": "Analyze Attendance",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  }
+}
